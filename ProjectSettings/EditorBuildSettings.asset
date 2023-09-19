@@ -5,7 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/SampleScene.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/Loading.unity
+    guid: c85d5d57e49240c45b33e67cc67805de
+  - enabled: 1
+    path: Assets/Scenes/TriviaUIDemo.unity
+    guid: d0241a6edcc32d34c8e7936b1d2a33ea
   m_configObjects: {}

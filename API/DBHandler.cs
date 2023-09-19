@@ -104,6 +104,21 @@ namespace TriviaAPI
 
         }
 
+        public static void GetPlayerCount()
+        {
+            try
+            {
+                Connect();
+                string query = "SELECT COUNT(*) FROM `trivia`.`players`;";
+                cmd = new MySqlCommand(query, conn);
+
+                reader = cmd.ExecuteReader();
+            }
+            catch (Exception ex) { }
+
+            Disconnect();
+        }
+
         public static void DeleteAllPlayersData() 
         {
             try
