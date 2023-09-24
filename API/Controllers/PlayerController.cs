@@ -24,12 +24,6 @@ namespace TriviaAPI.Controllers
             return DBHandler.GetPlayerName(id);
         }
 
-        [HttpGet]
-        public int Get()
-        {
-            return DBHandler.GetPlayerCount();
-        }
-
         //[HttpPost("playerId")]
         //public void Post(int playerId)
         //{

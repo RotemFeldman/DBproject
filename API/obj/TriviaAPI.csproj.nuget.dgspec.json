@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Documents\\VS Works\\TriviaAPI\\TriviaAPI.csproj": {}
+    "C:\\Users\\User\\Desktop\\DBProject\\DBproject\\API\\TriviaAPI.csproj": {}
   },
   "projects": {
-    "C:\\Documents\\VS Works\\TriviaAPI\\TriviaAPI.csproj": {
+    "C:\\Users\\User\\Desktop\\DBProject\\DBproject\\API\\TriviaAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Documents\\VS Works\\TriviaAPI\\TriviaAPI.csproj",
+        "projectUniqueName": "C:\\Users\\User\\Desktop\\DBProject\\DBproject\\API\\TriviaAPI.csproj",
         "projectName": "TriviaAPI",
-        "projectPath": "C:\\Documents\\VS Works\\TriviaAPI\\TriviaAPI.csproj",
-        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Documents\\VS Works\\TriviaAPI\\obj\\",
+        "projectPath": "C:\\Users\\User\\Desktop\\DBProject\\DBproject\\API\\TriviaAPI.csproj",
+        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\User\\Desktop\\DBProject\\DBproject\\API\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

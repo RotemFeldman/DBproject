@@ -13,6 +13,8 @@ namespace TriviaAPI
         static MySqlDataReader reader;
 
 
+
+
         public static Question GetQuestion(int id)
         {
             Question q = new Question();
@@ -104,8 +106,9 @@ namespace TriviaAPI
 
         }
 
-        public static void GetPlayerCount()
+        public static int GetPlayerCount()
         {
+            int count = -1;
             try
             {
                 Connect();
@@ -113,10 +116,15 @@ namespace TriviaAPI
                 cmd = new MySqlCommand(query, conn);
 
                 reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    count = reader.GetInt32(0);
+                }
             }
             catch (Exception ex) { }
 
             Disconnect();
+            return count;
         }
 
         public static void DeleteAllPlayersData() 
