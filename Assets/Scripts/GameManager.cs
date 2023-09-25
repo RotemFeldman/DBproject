@@ -7,15 +7,11 @@ public class GameManager : MonoBehaviour
     public UIManager uiManager;
 
     public int score;
+    public string PlayerName;
 
 
     private string correctAnswer;
 
-    private void Start()
-    {
-        score = 0;
-        uiManager.UpdateScore();
-    }
 
     public void UpdateCorrectAnswer(string text)
     {
@@ -34,5 +30,10 @@ public class GameManager : MonoBehaviour
         }
 
         return false;
+    }
+
+    public void EnterPlayerName(string playerName)
+    {
+        PlayerName = playerName;
     }
 }
