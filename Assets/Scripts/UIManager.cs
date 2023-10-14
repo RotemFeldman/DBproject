@@ -17,12 +17,17 @@ public class UIManager : MonoBehaviour
 
     [Header("Question")]
     public TMPro.TMP_InputField questionField;
+    public TMPro.TMP_Text questionNumberText;
     public TMPro.TMP_Text questionText;
 
     public TMP_Text answer1;
     public TMP_Text answer2;
     public TMP_Text answer3;
     public TMP_Text answer4;
+
+    public Transform NextQuestionButton;
+
+    private int questionNumber = 0;
 
 
     public void GetPlayerButtonClicked()
@@ -32,14 +37,23 @@ public class UIManager : MonoBehaviour
 
     public void GetQuestionButtonClicked()
     {
- 
         _APIManager.GetQuestion(questionField.text);
+    }
+
+    public void GetNextQuestionButtonClicked()
+    {
+        _APIManager.GetNextQuestion();
+        NextQuestionButton.gameObject.SetActive(false);
     }
 
 
     public void UpdateQuestionText(string text)
     {
+        questionNumber++;
+        questionNumberText.text = "Question " + questionNumber + ":";
         questionText.text = text;
+        questionText.color = Color.white;
+        _GameManager.wasQuestionAnswered = false;
     }
 
     public void UpdatePlayerName(string name)
