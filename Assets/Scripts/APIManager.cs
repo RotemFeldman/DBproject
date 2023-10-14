@@ -59,6 +59,12 @@ public class APIManager : MonoBehaviour
         StartCoroutine(GetQuestionCor(id));
     }
 
+    public void GetNextQuestion()
+    {
+        //FINISH THIS:
+        //Load the next question and call GetQuestionCor with its id
+    }
+
     IEnumerator GetQuestionCor(string id)
     {
   
