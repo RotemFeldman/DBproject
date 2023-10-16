@@ -10,11 +10,6 @@ public class UIManager : MonoBehaviour
     public APIManager _APIManager;
     public GameManager _GameManager;
 
-    [Header("Player")]
-    public TMPro.TMP_InputField playerId;
-    public TMPro.TMP_Text playerName;
-    public TMPro.TMP_Text scoreText;
-
     [Header("Question")]
     public TMPro.TMP_InputField questionField;
     public TMPro.TMP_Text questionNumberText;
@@ -28,12 +23,6 @@ public class UIManager : MonoBehaviour
     public Transform NextQuestionButton;
 
     private int questionNumber = 0;
-
-
-    public void GetPlayerButtonClicked()
-    {
-        _APIManager.GetPlayerName(playerId.text);
-    }
 
     public void GetQuestionButtonClicked()
     {
@@ -54,11 +43,6 @@ public class UIManager : MonoBehaviour
         questionText.text = text;
         questionText.color = Color.white;
         _GameManager.wasQuestionAnswered = false;
-    }
-
-    public void UpdatePlayerName(string name)
-    {
-        playerName.text = name;
     }
 
     public void UpdateAnswers(Question q)
@@ -91,12 +75,5 @@ public class UIManager : MonoBehaviour
         answers.RemoveAt(rnd);
 
 
-    }
-
-    public void UpdateScore()
-    {
-        int s = _GameManager.score;
-
-        scoreText.text = s.ToString();
     }
 }

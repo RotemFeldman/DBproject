@@ -9,10 +9,16 @@ namespace TriviaAPI.Controllers
     public class PlayerController : ControllerBase
     {
         // POST api/<ValuesController>
-        [HttpPost]
-        public void Post(string name)
+        [HttpGet("AddPlayer/{name}")]
+        public void Get(string name)
         {
             DBHandler.AddPlayer(name);
+        }
+
+        [HttpGet("Status/{name}")]
+        public int Get2(string name)
+        {
+            return DBHandler.GetPlayerStatus(name);
         }
 
         [HttpGet("{id}")]

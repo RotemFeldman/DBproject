@@ -14,5 +14,11 @@ namespace TriviaAPI.Controllers
         {
             return DBHandler.GetPlayerCount();
         }
+
+        [HttpGet("Statuses")]
+        public int Get2()
+        {
+            return DBHandler.GetPlayerStatusSum();
+        }
     }
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class APIManager : MonoBehaviour
@@ -12,12 +13,6 @@ public class APIManager : MonoBehaviour
 
     const string API_URL = "https://localhost:7271/api/";
 
-
-    public void GetPlayerName (string id) 
-    {
-        StartCoroutine(GetPlayerNameCor(id));
-    }
-
     public void RequestPlayerCount()
     {
         StartCoroutine(GetPlayerCount());
@@ -26,6 +21,50 @@ public class APIManager : MonoBehaviour
     public void AddNewPlayer(string name)
     {
         StartCoroutine(AddPlayer(name));
+    }
+
+    public void PlayerStatus(string name)
+    {
+        StartCoroutine(GetPlayerStatus(name));
+    }
+
+    public void TotalStatusSum()
+    {
+        StartCoroutine(GetStatusSum());
+    }
+
+    IEnumerator GetPlayerStatus(string name)
+    {
+        using (UnityWebRequest request = UnityWebRequest.Get(API_URL + "Player/" + "Status/" + name))
+        {
+            yield return request.SendWebRequest();
+            switch (request.result)
+            {
+                case UnityWebRequest.Result.Success:
+                    yield return int.Parse(request.downloadHandler.text);
+                    break;
+                case UnityWebRequest.Result.ConnectionError:
+                    Debug.Log("ERRORED CONN");
+                    break;
+            }
+        }
+    }
+
+    IEnumerator GetStatusSum()
+    {
+        using (UnityWebRequest request = UnityWebRequest.Get(API_URL + "Game/" + "Statuses"))
+        {
+            yield return request.SendWebRequest();
+            switch (request.result)
+            {
+                case UnityWebRequest.Result.Success:
+                    yield return int.Parse(request.downloadHandler.text);
+                    break;
+                case UnityWebRequest.Result.ConnectionError:
+                    Debug.Log("ERRORED CONN");
+                    break;
+            }
+        }
     }
 
     IEnumerator GetPlayerCount()
@@ -49,7 +88,7 @@ public class APIManager : MonoBehaviour
     {
         Debug.Log(name + " Init");
 
-        using (UnityWebRequest request = UnityWebRequest.Get(API_URL + "Player?name=" + name))
+        using (UnityWebRequest request = UnityWebRequest.Get(API_URL + "Player/" + "AddPlayer/" + name))
         {
             yield return request.SendWebRequest();
             switch (request.result)
@@ -64,21 +103,7 @@ public class APIManager : MonoBehaviour
         }
     }
 
-    IEnumerator GetPlayerNameCor(string id)
-    {
-        using (UnityWebRequest request = UnityWebRequest.Get(API_URL + "Player/" + id))
-        {
-            yield return request.SendWebRequest();
-            switch (request.result)
-            {
-                case UnityWebRequest.Result.Success:
-                    uiManager.UpdatePlayerName(request.downloadHandler.text);
-                    break;
-                case UnityWebRequest.Result.ConnectionError:
-                    break;
-            }
-        }
-    }
+
 
     public void GetQuestion(string id)
     {
@@ -87,14 +112,18 @@ public class APIManager : MonoBehaviour
 
     public void GetNextQuestion()
     {
+        if (gameManager.QuestionNumber == 10)
+        {
+            SceneManager.LoadScene(2);
+            return;
+        }
+
         gameManager.QuestionNumber++;
         GetQuestion(gameManager.QuestionNumber.ToString());
     }
 
     IEnumerator GetQuestionCor(string id)
     {
-  
-
         using (UnityWebRequest request = UnityWebRequest.Get(API_URL + "Questions/"+id))
         {
             yield return request.SendWebRequest();

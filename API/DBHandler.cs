@@ -1,5 +1,6 @@
 ﻿using MySql.Data;
 using MySql.Data.MySqlClient;
+using System.Diagnostics;
 using System.Xml.Linq;
 
 namespace TriviaAPI
@@ -82,10 +83,10 @@ namespace TriviaAPI
             p.id = id;
             p.name = GetPlayerName(id);
             p.score = GetPlayerScore(id);
-            p.time = GetPlayerTotalTime(id);
 
             return p;
         }
+
         public static void AddPlayer(string name)
         {
             try
@@ -159,25 +160,46 @@ namespace TriviaAPI
             return score;
         }
 
-        public static float GetPlayerTotalTime(int id)
+        public static int GetPlayerStatus(string name)
         {
-            float time = -1;
+            int Status = 0;
             try
             {
                 Connect();
-                string query = "SELECT `PlayerTotalTime` From `trivia`.`players` WHERE PlayerId = " + id;
+                string query = "SELECT `PlayerTotalTime` From `trivia`.`players` WHERE PlayerName = " + name;
                 cmd = new MySqlCommand(query, conn);
 
                 reader = cmd.ExecuteReader();
                 if (reader.Read())
                 {
-                    time = reader.GetFloat(0);
+                    Status = reader.GetInt32(0);
                 }
             }
             catch (Exception ex) { }
 
             Disconnect();
-            return time;
+            return Status;
+        }
+
+        public static int GetPlayerStatusSum()
+        {
+            int count = 0;
+            try
+            {
+                Connect();
+                string query = "SELECT SUM(PlayerFinished) FROM `trivia`.`players`;";
+                cmd = new MySqlCommand(query, conn);
+
+                reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    count = reader.GetInt32(0);
+                }
+            }
+            catch (Exception ex) { }
+
+            Disconnect();
+            return count;
         }
 
         public static string GetPlayerName(int id)
@@ -231,6 +253,7 @@ namespace TriviaAPI
             {
                 conn = new MySqlConnection(CON_STR);
                 conn.Open();
+                Console.WriteLine(conn.State);
             }
             catch 
             { 
@@ -243,7 +266,7 @@ namespace TriviaAPI
             conn.Close();
         }
 
-  
+        
 
     }
 }

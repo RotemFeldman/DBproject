@@ -7,7 +7,6 @@ public class Button : MonoBehaviour
 {
     
     public TMPro.TMP_Text answer;
-    public TMPro.TMP_InputField nameInputField;
 
     public GameManager gameManager;
 
@@ -16,14 +15,4 @@ public class Button : MonoBehaviour
     {
         gameManager.IsAnswerCorrect(answer.text);
     }
-
-    public void EnterNameClicked()
-    {
-        if (nameInputField != null)
-        {
-            gameManager.EnterPlayerName(nameInputField.text);
-            SceneManager.LoadScene("Loading");
-        }
-    }
-
 }

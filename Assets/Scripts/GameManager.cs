@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
             {
                 Debug.Log("Correct");
                 score++;
-                uiManager.UpdateScore();
+
                 uiManager.questionText.text = "Correct!";
                 uiManager.questionText.color = Color.green;
             }
@@ -55,10 +55,5 @@ public class GameManager : MonoBehaviour
 
             uiManager.NextQuestionButton.gameObject.SetActive(true);
         }
-    }
-
-    public void EnterPlayerName(string playerName)
-    {
-        PlayerName = playerName;
     }
 }
