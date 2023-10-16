@@ -22,6 +22,11 @@ public class APIManager : MonoBehaviour
         StartCoroutine(GetPlayerCount());
     }
 
+    public void AddNewPlayer(string name)
+    {
+        StartCoroutine(AddPlayer(name));
+    }
+
     IEnumerator GetPlayerCount()
     {
         using (UnityWebRequest request = UnityWebRequest.Get(API_URL + "Game/"))
@@ -33,6 +38,26 @@ public class APIManager : MonoBehaviour
                     loadingScreenBehavior.UpdatePlayerCount(int.Parse(request.downloadHandler.text));
                     break;
                 case UnityWebRequest.Result.ConnectionError:
+                    Debug.Log("ERRORED CONN");
+                    break;
+            }
+        }
+    }
+
+    IEnumerator AddPlayer(string name)
+    {
+        Debug.Log(name + " Init");
+
+        using (UnityWebRequest request = UnityWebRequest.Get(API_URL + "Player?name=" + name))
+        {
+            yield return request.SendWebRequest();
+            switch (request.result)
+            {
+                case UnityWebRequest.Result.Success:
+                    Debug.Log(name);
+                    break;
+                case UnityWebRequest.Result.ConnectionError:
+                    Debug.Log("ERRORED CONN");
                     break;
             }
         }

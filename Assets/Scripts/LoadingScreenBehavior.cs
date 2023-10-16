@@ -13,13 +13,18 @@ public class LoadingScreenBehavior : MonoBehaviour
 
     private bool _gameRunning = false;
 
-    void Update()
-    {    
+    private void Start()
+    {
+        apiManager.AddNewPlayer($"Player{_playerCount}");
+
         if (_playerCount < 2)
         {
             apiManager.RequestPlayerCount();
         }
+    }
 
+    void Update()
+    {
         if (_playerCount >= 2 && _gameRunning == false)
         {
             _gameRunning = true;

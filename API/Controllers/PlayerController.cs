@@ -8,12 +8,9 @@ namespace TriviaAPI.Controllers
     [ApiController]
     public class PlayerController : ControllerBase
     {
-
-
-
         // POST api/<ValuesController>
         [HttpPost]
-        public void Post([FromBody] string name)
+        public void Post(string name)
         {
             DBHandler.AddPlayer(name);
         }
