@@ -7,6 +7,7 @@ using TMPro;
 public class APIManager : MonoBehaviour
 {    
     [SerializeField] UIManager uiManager;
+    [SerializeField] GameManager gameManager;
     [SerializeField] LoadingScreenBehavior loadingScreenBehavior;
 
     const string API_URL = "https://localhost:7271/api/";
@@ -86,8 +87,8 @@ public class APIManager : MonoBehaviour
 
     public void GetNextQuestion()
     {
-        //FINISH THIS:
-        //Load the next question and call GetQuestionCor with its id
+        gameManager.QuestionNumber++;
+        GetQuestion(gameManager.QuestionNumber.ToString());
     }
 
     IEnumerator GetQuestionCor(string id)

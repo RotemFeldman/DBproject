@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
 
     public int score;
     public string PlayerName;
+    public int QuestionNumber = 0;
 
 
     private string correctAnswer;
