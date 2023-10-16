@@ -20,5 +20,11 @@ namespace TriviaAPI.Controllers
         {
             return DBHandler.GetPlayerStatusSum();
         }
+
+        [HttpGet("Winner")]
+        public string Get3()
+        {
+            return DBHandler.GetWinner();
+        }
     }
 }

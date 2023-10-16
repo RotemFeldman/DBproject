@@ -15,7 +15,7 @@ public class LoadingScreenBehavior : MonoBehaviour
 
     private float timer = 0;
 
-    private bool PlayerAdded = false;
+    private bool PlayerAdded = false;    
 
     private void Start()
     {

@@ -29,6 +29,8 @@ namespace TriviaAPI
                     q.text = reader.GetString(0);
                 }
 
+                conn.Close();
+
                 Connect();
                 query = "SELECT Answer1Text FROM trivia.questions WHERE QuestionId = " + id;
                 cmd = new MySqlCommand(query, conn);
@@ -38,6 +40,8 @@ namespace TriviaAPI
                 {
                     q.ans1 = reader.GetString(0);
                 }
+
+                conn.Close();
 
                 Connect();
                 query = "SELECT Answer2Text FROM trivia.questions WHERE QuestionId = " + id;
@@ -49,6 +53,8 @@ namespace TriviaAPI
                     q.ans2 = reader.GetString(0);
                 }
 
+                conn.Close();
+
                 Connect();
                 query = "SELECT Answer3Text FROM trivia.questions WHERE QuestionId = " + id;
                 cmd = new MySqlCommand(query, conn);
@@ -58,6 +64,8 @@ namespace TriviaAPI
                 {
                     q.ans3 = reader.GetString(0);
                 }
+
+                conn.Close();
 
                 Connect();
                 query = "SELECT Answer4Text FROM trivia.questions WHERE QuestionId = " + id;
@@ -76,17 +84,6 @@ namespace TriviaAPI
             return q;
         }
 
-        public static Player GetPlayer(int id)
-        {
-            Player p = new Player();
-
-            p.id = id;
-            p.name = GetPlayerName(id);
-            p.score = GetPlayerScore(id);
-
-            return p;
-        }
-
         public static void AddPlayer(string name)
         {
             try
@@ -101,6 +98,27 @@ namespace TriviaAPI
 
             Disconnect();
 
+        }
+
+        public static string GetWinner()
+        {
+            string winner = "";
+            try
+            {
+                Connect();
+                string query = "SELECT PlayerName FROM `trivia`.`players` WHERE PlayerScore=(Select MAX(PlayerScore) FROM `trivia`.`players`);";
+                cmd = new MySqlCommand(query, conn);
+
+                reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    winner = reader.GetString(0);
+                }
+            }
+            catch (Exception ex) { }
+
+            Disconnect();
+            return winner;
         }
 
         public static int GetPlayerCount()
@@ -139,13 +157,13 @@ namespace TriviaAPI
             Disconnect();
         }
 
-        public static int GetPlayerScore(int id)
+        public static int GetPlayerScore(string name)
         {
             int score = -1;
             try
             {
                 Connect();
-                string query = "SELECT `PlayerScore` From `trivia`.`players` WHERE PlayerId = " + id;
+                string query = $"SELECT `PlayerScore` From `trivia`.`players` WHERE PlayerName = \"{name}\";";
                 cmd = new MySqlCommand(query, conn);
 
                 reader = cmd.ExecuteReader();
@@ -166,7 +184,7 @@ namespace TriviaAPI
             try
             {
                 Connect();
-                string query = "SELECT `PlayerTotalTime` From `trivia`.`players` WHERE PlayerName = " + name;
+                string query = $"SELECT `PlayerTotalTime` From `trivia`.`players` WHERE PlayerName = \"{name}\";";
                 cmd = new MySqlCommand(query, conn);
 
                 reader = cmd.ExecuteReader();
@@ -202,6 +220,21 @@ namespace TriviaAPI
             return count;
         }
 
+        public static void SetPlayerStatus(string name)
+        {
+            try
+            {
+                Connect();
+                string query = $"UPDATE `trivia`.`players` SET PlayerFinished=1 WHERE PlayerName=\"{name}\";";
+                cmd = new MySqlCommand(query, conn);
+
+                reader = cmd.ExecuteReader();
+            }
+            catch (Exception ex) { }
+
+            Disconnect();
+        }
+
         public static string GetPlayerName(int id)
         {
             string name = string.Empty;
@@ -223,9 +256,9 @@ namespace TriviaAPI
             return name;
         }
 
-        public static void AddScore(int id)
+        public static void AddScore(string name)
         {
-            int score = GetPlayerScore(id);
+            int score = GetPlayerScore(name);
 
             if (score == -1)
             {
@@ -237,7 +270,7 @@ namespace TriviaAPI
             try
             {
                 Connect();
-                string query = "INSERT INTO `PlayerScore` FROM `trivia`.`players` WHERE PlayerId = " + id + " VALUES (" + score + ");";
+                string query = $"UPDATE `trivia`.`players` SET PlayerScore={score} WHERE PlayerName=\"{name}\";";
                 cmd = new MySqlCommand(query, conn);
 
                 reader = cmd.ExecuteReader();

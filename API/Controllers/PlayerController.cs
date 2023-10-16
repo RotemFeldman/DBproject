@@ -15,10 +15,28 @@ namespace TriviaAPI.Controllers
             DBHandler.AddPlayer(name);
         }
 
-        [HttpGet("Status/{name}")]
+        [HttpGet("GetStatus/{name}")]
         public int Get2(string name)
         {
             return DBHandler.GetPlayerStatus(name);
+        }
+
+        [HttpGet("SetStatus/{name}")]
+        public void Get3(string name)
+        {
+            DBHandler.SetPlayerStatus(name);
+        }
+
+        [HttpGet("AddScore/{name}")]
+        public void Get4(string name)
+        {
+            DBHandler.AddScore(name);
+        }
+
+        [HttpGet("GetScore/{name}")]
+        public void Get5(string name)
+        {
+            DBHandler.GetPlayerScore(name);
         }
 
         [HttpGet("{id}")]

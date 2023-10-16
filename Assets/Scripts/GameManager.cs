@@ -7,10 +7,11 @@ public class GameManager : MonoBehaviour
     private UIManager uiManager;
     private APIManager apiManager;
 
-    public int score;
-    public string PlayerName;
     public int QuestionNumber = 0;
 
+    public static string PlayerName = "";
+
+    public static int Score = 0;
 
     private string correctAnswer;
 
@@ -42,7 +43,7 @@ public class GameManager : MonoBehaviour
             if (correctAnswer == text)
             {
                 Debug.Log("Correct");
-                score++;
+                apiManager.AddPlayerScore(PlayerName);
 
                 uiManager.questionText.text = "Correct!";
                 uiManager.questionText.color = Color.green;

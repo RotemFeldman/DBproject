@@ -10,6 +10,7 @@ public class APIManager : MonoBehaviour
     [SerializeField] UIManager uiManager;
     [SerializeField] GameManager gameManager;
     [SerializeField] LoadingScreenBehavior loadingScreenBehavior;
+    [SerializeField] EndScreenBehavior endScreenBehavior;
 
     const string API_URL = "https://localhost:7271/api/";
 
@@ -33,7 +34,53 @@ public class APIManager : MonoBehaviour
         StartCoroutine(GetStatusSum());
     }
 
+    public void GetPlayerScore(string name)
+    {
+        StartCoroutine(GetScore(name));
+    }
+
+    public void AddPlayerScore(string name)
+    {
+        StartCoroutine(AddScore(name));
+    }
+
+    public void GetGameWinner()
+    {
+        StartCoroutine(GetWinner());
+    }
+
     IEnumerator GetPlayerStatus(string name)
+    {
+        using (UnityWebRequest request = UnityWebRequest.Get(API_URL + "Player/" + "GetStatus/" + name))
+        {
+            yield return request.SendWebRequest();
+            switch (request.result)
+            {
+                case UnityWebRequest.Result.Success:
+                    yield return int.Parse(request.downloadHandler.text);
+                    break;
+                case UnityWebRequest.Result.ConnectionError:
+                    Debug.Log("ERRORED CONN");
+                    break;
+            }
+        }
+    }
+
+    IEnumerator SetPlayerStatus(string name)
+    {
+        using (UnityWebRequest request = UnityWebRequest.Get(API_URL + "Player/" + "SetStatus/" + name))
+        {
+            yield return request.SendWebRequest();
+            switch (request.result)
+            {
+                case UnityWebRequest.Result.ConnectionError:
+                    Debug.Log("ERRORED CONN");
+                    break;
+            }
+        }
+    }
+
+    IEnumerator PlayerFinished()
     {
         using (UnityWebRequest request = UnityWebRequest.Get(API_URL + "Player/" + "Status/" + name))
         {
@@ -50,6 +97,23 @@ public class APIManager : MonoBehaviour
         }
     }
 
+    IEnumerator GetWinner()
+    {
+        using (UnityWebRequest request = UnityWebRequest.Get(API_URL + "Game/" + "Winner"))
+        {
+            yield return request.SendWebRequest();
+            switch (request.result)
+            {
+                case UnityWebRequest.Result.Success:
+                    endScreenBehavior.winnerName = request.downloadHandler.text;
+                    break;
+                case UnityWebRequest.Result.ConnectionError:
+                    Debug.Log("ERRORED CONN");
+                    break;
+            }
+        }
+    }
+
     IEnumerator GetStatusSum()
     {
         using (UnityWebRequest request = UnityWebRequest.Get(API_URL + "Game/" + "Statuses"))
@@ -58,7 +122,7 @@ public class APIManager : MonoBehaviour
             switch (request.result)
             {
                 case UnityWebRequest.Result.Success:
-                    yield return int.Parse(request.downloadHandler.text);
+                    endScreenBehavior.playerStatusSum = int.Parse(request.downloadHandler.text);
                     break;
                 case UnityWebRequest.Result.ConnectionError:
                     Debug.Log("ERRORED CONN");
@@ -86,15 +150,13 @@ public class APIManager : MonoBehaviour
 
     IEnumerator AddPlayer(string name)
     {
-        Debug.Log(name + " Init");
-
         using (UnityWebRequest request = UnityWebRequest.Get(API_URL + "Player/" + "AddPlayer/" + name))
         {
             yield return request.SendWebRequest();
             switch (request.result)
             {
                 case UnityWebRequest.Result.Success:
-                    Debug.Log(name);
+                    GameManager.PlayerName = name;
                     break;
                 case UnityWebRequest.Result.ConnectionError:
                     Debug.Log("ERRORED CONN");
@@ -103,7 +165,40 @@ public class APIManager : MonoBehaviour
         }
     }
 
+    IEnumerator GetScore(string name)
+    {
+        using (UnityWebRequest request = UnityWebRequest.Get(API_URL + "Player/" + "GetScore/" + name))
+        {
+            yield return request.SendWebRequest();
+            switch (request.result)
+            {
+                case UnityWebRequest.Result.Success:
+                    GameManager.Score = int.Parse(request.downloadHandler.text);
+                    break;
+                case UnityWebRequest.Result.ConnectionError:
+                    Debug.Log("ERRORED CONN");
+                    break;
+            }
+        }
+    }
 
+    IEnumerator AddScore(string name)
+    {
+        using (UnityWebRequest request = UnityWebRequest.Get(API_URL + "Player/" + "AddScore/" + name))
+        {
+            yield return request.SendWebRequest();
+            switch (request.result)
+            {
+                case UnityWebRequest.Result.Success:
+                    GameManager.PlayerName = name;
+                    GetPlayerScore(name);
+                    break;
+                case UnityWebRequest.Result.ConnectionError:
+                    Debug.Log("ERRORED CONN");
+                    break;
+            }
+        }
+    }
 
     public void GetQuestion(string id)
     {
@@ -114,6 +209,7 @@ public class APIManager : MonoBehaviour
     {
         if (gameManager.QuestionNumber == 10)
         {
+            StartCoroutine(SetPlayerStatus(GameManager.PlayerName));
             SceneManager.LoadScene(2);
             return;
         }
